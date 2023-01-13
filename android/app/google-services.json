@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "427272616631",
+    "project_id": "team-tracker-6359e",
+    "storage_bucket": "team-tracker-6359e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:427272616631:android:5d9661b3f741cf96e26b32",
+        "android_client_info": {
+          "package_name": "com.example.team_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "427272616631-73ei032d9c0346761qpvj62t6f3oec10.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZPXs7A7D5S-cwtRmxjMugS5qmuYOH_J4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "427272616631-73ei032d9c0346761qpvj62t6f3oec10.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
