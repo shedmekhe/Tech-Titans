@@ -24,7 +24,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
   final loc.Location location = loc.Location();
   StreamSubscription<loc.LocationData> _locationSubscription;
   final box = GetStorage();
-  String room_name;
+  String vehicleNo;
   String roomCodeforjoin;
   _getLocation(String roomId, String userId) async {
     try {
@@ -52,7 +52,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
     await FirebaseFirestore.instance
         .collection('location')
         .doc(roomId)
-        .set({"room_name": roomName}, SetOptions(merge: true));
+        .set({"vehicleNo": roomName}, SetOptions(merge: true));
   }
 
   Future<void> _listenLocation(String roomId, String userId) async {
@@ -136,7 +136,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                     FadeAnimation(
                         1,
                         Text(
-                          "Room Creation",
+                          "Vehicle Registration",
                           style: TextStyle(color: Colors.white, fontSize: 40),
                         )),
                     SizedBox(
@@ -145,7 +145,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                     FadeAnimation(
                         1.3,
                         Text(
-                          "Enter Room Name ",
+                          "Enter Vehicle No.",
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         )),
                   ],
@@ -190,12 +190,12 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                                                       Colors.grey.shade200))),
                                       child: TextField(
                                         decoration: const InputDecoration(
-                                            hintText: "Room Name",
+                                            hintText: "Vehicle No.",
                                             hintStyle:
                                                 TextStyle(color: Colors.grey),
                                             border: InputBorder.none),
                                         onChanged: (value) {
-                                          room_name = value;
+                                          vehicleNo = value;
                                         },
                                       ),
                                     ),
@@ -209,16 +209,16 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                               1.6,
                               TextButton(
                                 onPressed: () async {
-                                  if (room_name == null) {
+                                  if (vehicleNo == null) {
                                     const snackBar = SnackBar(
-                                      content: Text('Enter Room Name'),
+                                      content: Text('Enter Vehicle No.'),
                                     );
                                     ScaffoldMessenger.of(context)
                                         .showSnackBar(snackBar);
                                   } else {
-                                    String roomCode = generateRandomString(6);
+                                    String roomCode = vehicleNo;
                                     print("room code " + roomCode.toString());
-                                    _create_Room(roomCode, room_name);
+                                    _create_Room(roomCode, vehicleNo);
 
                                     var snapshot = await FirebaseFirestore
                                         .instance
@@ -238,7 +238,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => RoomPage(
-                                                title: room_name,
+                                                title: vehicleNo,
                                                 roomId: roomCode,
                                                 user_id: username, locationSubscription : _locationSubscription)));
                                   }
@@ -304,7 +304,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                     FadeAnimation(
                         1,
                         Text(
-                          "Room Joining",
+                          "Vehicle Tracking",
                           style: TextStyle(color: Colors.white, fontSize: 40),
                         )),
                     SizedBox(
@@ -313,7 +313,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                     FadeAnimation(
                         1.3,
                         Text(
-                          "Enter Room Code ",
+                          "Enter Vehicle No.",
                           style: TextStyle(color: Colors.white, fontSize: 18),
                         )),
                   ],
@@ -358,7 +358,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                                                       Colors.grey.shade200))),
                                       child: TextField(
                                         decoration: const InputDecoration(
-                                            hintText: "Enter Code",
+                                            hintText: "Enter Vehicle No.",
                                             hintStyle:
                                                 TextStyle(color: Colors.grey),
                                             border: InputBorder.none),
@@ -379,8 +379,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                                 onPressed: () async {
                                   roomCodeforjoin = roomCodeforjoin.trim();
 
-                                  if (roomCodeforjoin == null ||
-                                      roomCodeforjoin.length != 6) {
+                                  if (roomCodeforjoin == null) {
                                     const snackBar = SnackBar(
                                       content: Text('Room Name is Invalid'),
                                     );
@@ -416,12 +415,12 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => RoomPage(
-                                                  title: room_name,
+                                                  title: vehicleNo,
                                                   roomId: roomCodeforjoin,
                                                   user_id: username)));
                                     } else {
                                       const snackBar = SnackBar(
-                                        content: Text('Room Name is Invalid'),
+                                        content: Text('Vehicle No. is Invalid'),
                                       );
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(snackBar);
@@ -443,7 +442,7 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                                                   Colors.lightGreen[600]),
                                         ),
                                         child: const Text(
-                                          "Join",
+                                          "Find",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold),

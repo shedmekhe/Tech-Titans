@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )));
                   },
                   child: const Text(
-                    "Create Room",
+                    "Registration",
                   ),
                 ),
                 const SizedBox(
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 )));
                   },
                   child: const Text(
-                    "Join Room",
+                    "Tracking",
                   ),
                 ),
               ],
