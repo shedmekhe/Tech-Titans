@@ -20,12 +20,16 @@ class RoomPage extends StatefulWidget {
   final StreamSubscription<loc.LocationData> locationSubscription;
   final String title;
 
-  const RoomPage({Key key, this.title, this.user_id, this.roomId, this.locationSubscription,})
-      : super(key: key);
+  const RoomPage({
+    Key key,
+    this.title,
+    this.user_id,
+    this.roomId,
+    this.locationSubscription,
+  }) : super(key: key);
 
   @override
   State<RoomPage> createState() => _RoomPageState();
-
 }
 
 class _RoomPageState extends State<RoomPage> {
@@ -42,22 +46,22 @@ class _RoomPageState extends State<RoomPage> {
     );
   }
 
+  Future<void> deleteUser() async {
+    widget.locationSubscription?.cancel();
+    // setState(() {
+    //   widget.locationSubscription = null;
+    // });
 
-Future<void> deleteUser()  async {
+    final box = GetStorage();
 
-  widget.locationSubscription?.cancel();
-  // setState(() {
-  //   widget.locationSubscription = null;
-  // });
-
-  final box = GetStorage();
-
-  var name = box.read('name');
-  await FirebaseFirestore.instance.collection("location").doc(widget.roomId)
-      .collection("users").doc(widget.user_id).delete();
-
-
-}
+    var name = box.read('name');
+    await FirebaseFirestore.instance
+        .collection("location")
+        .doc(widget.roomId)
+        .collection("users")
+        .doc(widget.user_id)
+        .delete();
+  }
 
   Future<void> _newItem() async {
     return showDialog(
@@ -67,16 +71,20 @@ Future<void> deleteUser()  async {
           content: SingleChildScrollView(
             child: ListBody(
               children: [
-                Text("RoomID :  " + widget.roomId,
-                  style: const TextStyle(color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
+                Text(
+                  "RoomID :  " + widget.roomId,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold),
                 ),
-
                 const SizedBox(
                   height: 10,
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    print("share called +++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                    print(
+                        "share called +++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
                     share();
                   },
                   child: const Text(
@@ -121,9 +129,9 @@ Future<void> deleteUser()  async {
                   child: const Text("ADD"),
                   style: ButtonStyle(
                       foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.blueAccent)),
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blueAccent)),
                 ),
               ],
             ),
@@ -133,12 +141,11 @@ Future<void> deleteUser()  async {
     );
   }
 
-
   final GlobalKey<SideMenuState> _sideMenuKey = GlobalKey<SideMenuState>();
   final GlobalKey<SideMenuState> _endSideMenuKey = GlobalKey<SideMenuState>();
 
   final CustomInfoWindowController _customInfoWindowController =
-  CustomInfoWindowController();
+      CustomInfoWindowController();
 
   bool flg = false;
 
@@ -385,36 +392,38 @@ Future<void> deleteUser()  async {
         child: WillPopScope(
           onWillPop: () {
             return showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Are you sure?'),
-                content:  const Text('Do you want to leave this room ?'),
-                actions: <Widget>[
-                  ElevatedButton(
-                    style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.green)),
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: const Text(
-                        "NO",
-                    ),
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Are you sure?'),
+                    content: const Text('Do you want to leave this room ?'),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.green)),
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text(
+                          "NO",
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.red)),
+                        onPressed: () => {
+                          deleteUser(),
+                          Navigator.of(context).pop(true),
+                        },
+                        child: const Text("YES"),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.red)),
-                    onPressed: () => {
-                      deleteUser(),
-                      Navigator.of(context).pop(true),
-
-
-                    },
-                    child: const Text("YES"),
-                  ),
-                ],
-              ),
-            ) ??
+                ) ??
                 false;
           },
           child: Scaffold(
-           bottomNavigationBar: SizedBox(
+            bottomNavigationBar: SizedBox(
               height: 60,
               child: BottomAppBar(
                 child: ListView(
@@ -424,7 +433,6 @@ Future<void> deleteUser()  async {
                       icon: const Icon(
                         Icons.add_location,
                       ),
-
                       onPressed: () async {
                         // targetForMarking=await _controller.getLatLng(screenCoordinate) ;
                       },
@@ -451,8 +459,7 @@ Future<void> deleteUser()  async {
                     ),
                     onTap: () {
                       _newItem();
-                    }
-                )
+                    })
               ],
               title: const Text('Team Tracker'),
             ),
@@ -467,7 +474,8 @@ Future<void> deleteUser()  async {
                 if (_added) {
                   mymap(snapshot);
                 }
-                if (snapshot.connectionState == ConnectionState.waiting && _added == false) {
+                if (snapshot.connectionState == ConnectionState.waiting &&
+                    _added == false) {
                   return const Center(child: CircularProgressIndicator());
                 }
                 // List<Marker>markerList;
@@ -498,6 +506,7 @@ Future<void> deleteUser()  async {
                 return Stack(
                   children: [
                     GoogleMap(
+                      myLocationButtonEnabled: true,
                       zoomGesturesEnabled: true,
                       onCameraMove: (position) {
                         _customInfoWindowController.onCameraMove();
@@ -507,7 +516,7 @@ Future<void> deleteUser()  async {
                         ...(markeradd(snapshot) ??
                             snapshot.data.docs.map((e) {
                               Map<String, dynamic> data =
-                              e.data() as Map<String, dynamic>;
+                                  e.data() as Map<String, dynamic>;
                               print("-----------------------");
                               print(data);
                               return Marker(
@@ -524,9 +533,9 @@ Future<void> deleteUser()  async {
                       initialCameraPosition: CameraPosition(
                         target: LatLng(
                           snapshot.data.docs.singleWhere((element) =>
-                          element.id == widget.user_id)['latitude'],
+                              element.id == widget.user_id)['latitude'],
                           snapshot.data.docs.singleWhere((element) =>
-                          element.id == widget.user_id)['longitude'],
+                              element.id == widget.user_id)['longitude'],
                         ),
                       ),
                       onMapCreated: (GoogleMapController controller) async {
@@ -538,8 +547,7 @@ Future<void> deleteUser()  async {
                         });
                       },
                       onTap: (LatLng latLng) async {
-                        if(flg)
-                        {
+                        if (flg) {
                           _customInfoWindowController.hideInfoWindow();
                           setState(() {
                             flg = false;
@@ -547,23 +555,24 @@ Future<void> deleteUser()  async {
                           return;
                         }
                         await _markerDisc();
-                        if(markerDisc == "")
-                          return;
+                        if (markerDisc == "") return;
                         try {
                           // String name = box.read('name');
                           print(latLng);
                           dynamic tmp = [];
-                          print("------------++++++++++++++++++++++++++---------------+++++++++++++++++++");
+                          print(
+                              "------------++++++++++++++++++++++++++---------------+++++++++++++++++++");
                           print(markerDisc);
-                          print("------------++++++++++++++++++++++++++---------------+++++++++++++++++++");
+                          print(
+                              "------------++++++++++++++++++++++++++---------------+++++++++++++++++++");
                           var data = snapshot.data.docs
-                              .singleWhere(
-                                  (element) => element.id == widget.user_id)
-                              .data()
-                              .toString()
-                              .contains("locations")
+                                  .singleWhere(
+                                      (element) => element.id == widget.user_id)
+                                  .data()
+                                  .toString()
+                                  .contains("locations")
                               ? snapshot.data.docs.singleWhere((element) =>
-                          element.id == widget.user_id)["locations"]
+                                  element.id == widget.user_id)["locations"]
                               : [];
                           print(data);
                           if (data != null) {
@@ -620,7 +629,7 @@ Future<void> deleteUser()  async {
               },
             ),
             floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniStartFloat,
+                FloatingActionButtonLocation.miniStartFloat,
           ),
         ),
       ),
@@ -692,7 +701,7 @@ Future<void> deleteUser()  async {
           ListTile(
             onTap: () {},
             leading:
-            const Icon(Icons.star_border, size: 20.0, color: Colors.white),
+                const Icon(Icons.star_border, size: 20.0, color: Colors.white),
             title: const Text("Trace Path"),
             textColor: Colors.white,
             dense: true,
@@ -705,7 +714,7 @@ Future<void> deleteUser()  async {
               Navigator.pop(context);
             },
             leading:
-            const Icon(Icons.settings, size: 20.0, color: Colors.white),
+                const Icon(Icons.settings, size: 20.0, color: Colors.white),
             title: const Text("Leave Room"),
             textColor: Colors.white,
             dense: true,
@@ -720,13 +729,13 @@ Future<void> deleteUser()  async {
   Future<void> mymap(AsyncSnapshot<QuerySnapshot> snapshot) async {
     await _controller
         .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target: LatLng(
-          snapshot.data.docs.singleWhere(
+            target: LatLng(
+              snapshot.data.docs.singleWhere(
                   (element) => element.id == widget.user_id)['latitude'],
-          snapshot.data.docs.singleWhere(
+              snapshot.data.docs.singleWhere(
                   (element) => element.id == widget.user_id)['longitude'],
-        ),
-        zoom: 18)));
+            ),
+            zoom: 18)));
   }
 }
 

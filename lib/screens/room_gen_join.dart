@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -240,7 +239,9 @@ class _RoomGenerationJoinState extends State<RoomGenerationJoin> {
                                             builder: (context) => RoomPage(
                                                 title: vehicleNo,
                                                 roomId: roomCode,
-                                                user_id: username, locationSubscription : _locationSubscription)));
+                                                user_id: username,
+                                                locationSubscription:
+                                                    _locationSubscription)));
                                   }
                                 },
                                 child: Container(

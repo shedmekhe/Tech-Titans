@@ -27,6 +27,11 @@ class _MyMapState extends State<MyMap> {
           return Center(child: CircularProgressIndicator());
         }
         return GoogleMap(
+          zoomGesturesEnabled: true,
+          minMaxZoomPreference: MinMaxZoomPreference(13,17),
+          onCameraMove:(CameraPosition cameraPosition){
+            print(cameraPosition.zoom);
+          },
           mapType: MapType.normal,
           markers: {
             Marker(
@@ -47,7 +52,7 @@ class _MyMapState extends State<MyMap> {
                 snapshot.data.docs.singleWhere(
                     (element) => element.id == widget.user_id)['longitude'],
               ),
-              zoom: 14.47),
+              ),
           onMapCreated: (GoogleMapController controller) async {
             setState(() {
               _controller = controller;
@@ -68,6 +73,8 @@ class _MyMapState extends State<MyMap> {
               snapshot.data.docs.singleWhere(
                   (element) => element.id == widget.user_id)['longitude'],
             ),
-            zoom: 14.47)));
+            )));
   }
 }
+// 71>>>>>>>>>>>>>>zoom: 14.47
+// 51>>>>>>>>>>>>>>zoom: 14.47
